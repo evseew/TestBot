@@ -77,15 +77,11 @@ async def chat_with_assistant(user_id, user_message):
     """Отправляет сообщение ассистенту и получает ответ."""
     thread_id = await get_or_create_thread(user_id)
     
-    # Добавляем контекст к сообщению
-    context = await get_conversation_context(user_id)
-    full_message = f"{user_message}\n{context}"
-
-    # Отправляем сообщение в поток
+    # Отправляем только текущее сообщение, без контекста
     openai.beta.threads.messages.create(
         thread_id=thread_id,
         role="user",
-        content=full_message
+        content=user_message
     )
 
     # Запускаем ассистента
@@ -102,16 +98,13 @@ async def chat_with_assistant(user_id, user_message):
         )
         if run_status.status in ["completed", "failed"]:
             break
-        await asyncio.sleep(1)  # Добавляем задержку
+        await asyncio.sleep(1)
 
     # Получаем ответ от ассистента
     messages = openai.beta.threads.messages.list(thread_id=thread_id)
 
     if messages and len(messages.data) > 0:
         response = messages.data[0].content[0].text.value
-        # Сохраняем сообщения в историю
-        await add_message_to_history(user_id, "user", user_message)
-        await add_message_to_history(user_id, "assistant", response)
         return response
 
     return "Ошибка: не удалось получить ответ от ассистента."

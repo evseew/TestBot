@@ -28,6 +28,20 @@ OPENAI_API_KEY=your_openai_api_key
 ASSISTANT_ID=your_assistant_id
 ```
 
+## Настройка переменных окружения
+
+1. Создайте копию файла `.env.example` и переименуйте его в `.env`:
+```bash
+cp .env.example .env
+```
+
+2. Получите необходимые токены:
+   - `TELEGRAM_BOT_TOKEN`: Создайте нового бота у [@BotFather](https://t.me/BotFather) и получите токен
+   - `OPENAI_API_KEY`: Получите API ключ на [платформе OpenAI](https://platform.openai.com/api-keys)
+   - `ASSISTANT_ID`: Создайте ассистента в [OpenAI](https://platform.openai.com/assistants) и скопируйте его ID
+
+3. Заполните файл `.env` полученными значениями
+
 ## Запуск
 
 ```bash
